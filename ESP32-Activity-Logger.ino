@@ -1,5 +1,8 @@
+#include <TinyGPS++.h>
 #include <Ticker.h>
 #include "Bluetooth.h"
+
+TinyGPSPlus gps;
 
 // Using Neil Kolban's Bluetooth libraries. Can save a lot of space on the device by not doing this...
 // Bluetooth specs for GATT at https://www.bluetooth.com/specifications/gatt/characteristics/
@@ -43,6 +46,10 @@ void handleBluetooth() {
 void setup() {
   // Use Serial1 for debug logging
   Serial.begin(115200);
+  // Now use Serial2 for GPS.
+  // Initialize before BT, because it generally takes longer to setup
+  Serial2.begin(9600);
+  
   btConnection = new Bluetooth(messageCallback, notifyCallback);
   btConnection->init();
 
@@ -56,5 +63,18 @@ void loop() {
     btUpdate = false;
     btConnection->handle();
   }
+
+  // GPS
+  while(Serial2.available() > 0) {
+    gps.encode(Serial2.read());
+  }
+
+  if(gps.location.isUpdated()) {
+    Serial.print("Latitude = ");
+    Serial.print(gps.location.lat(),8);
+    Serial.print(", Longitude = ");
+    Serial.println(gps.location.lng(),8);
+  }
+  
   delay(1000);
 }

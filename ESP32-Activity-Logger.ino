@@ -9,7 +9,7 @@
 // Any heart rate device supporting GATT will be at UUID 0x180D
 static BLEUUID serviceUUID((uint16_t)0x180D);
 // Any heart rate device supporting GATT will have it's heart rate value at 0x2A37
-static BLEUUID    charUUID((uint16_t)0x2A37);
+static BLEUUID      hrUUID((uint16_t)0x2A37);
 
 // The scan device
 BLEScan* pBLEScan;
@@ -66,7 +66,7 @@ bool connectToServer() {
     Serial.println(String("   - Characteristic found: ") + it->first.c_str());
   }
 
-  pRemoteCharacteristic = pRemoteService->getCharacteristic(charUUID);
+  pRemoteCharacteristic = pRemoteService->getCharacteristic(hrUUID);
   if(pRemoteCharacteristic == nullptr) {
     Serial.print(" - Failed to find the characteristic");
     pClient->disconnect();

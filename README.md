@@ -19,6 +19,7 @@ The project uses Neil Kolban's libraries for Bluetooth connections ([here](https
 - [ ] Increase GPS capabilities (time, speed, etc)
 - [ ] Increase Bluetooth capabilities (battery, etc)
 - [ ] In circuit, add an on/off switch, battery, RTC
+- [ ] Remove currentData.time_age, as we can do the calculation ourselves and removing it saves assigning it every time in the loop...
 
 ## Some background
 Just to record the basics of GATT for the software. Don't mind this section, they are kind of random notes...

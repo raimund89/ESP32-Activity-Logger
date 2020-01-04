@@ -8,6 +8,16 @@ The project uses Neil Kolban's libraries for Bluetooth connections ([here](https
 - [x] Receive GPS location from GY-GPS6MV2 module
 - [x] Connecting with GATT Heart Rate devices
 
+## Circuit design
+It should contain:
+- An on/off switch
+- Two buttons, one to start an activity, one to start uploading (later maybe one with short/long press?)
+- The ESP32 module
+- UART interface
+- The GPS module
+- An SD-card module
+- A battery
+
 ## Todo list
 - [ ] Make a central structure for the most recent data
 - [ ] Make a variable indicating GPS connection is established
@@ -20,6 +30,7 @@ The project uses Neil Kolban's libraries for Bluetooth connections ([here](https
 - [ ] Increase Bluetooth capabilities (battery, etc)
 - [ ] In circuit, add an on/off switch, battery, RTC
 - [ ] Remove currentData.time_age, as we can do the calculation ourselves and removing it saves assigning it every time in the loop...
+- [ ] Add two buttons that the user needs to use to make a choice between uploading and starting.
 
 ## Some background
 Just to record the basics of GATT for the software. Don't mind this section, they are kind of random notes...

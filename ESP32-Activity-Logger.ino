@@ -3,6 +3,10 @@
 // Using Neil Kolban's Bluetooth libraries. Can save a lot of space on the device by not doing this...
 // Bluetooth specs for GATT at https://www.bluetooth.com/specifications/gatt/characteristics/
 
+// TODO: Add more callback methods
+// TODO: Add support for heart rate AND cadence
+// TODO: Somehow be able to spawn multiple BT connections
+
 static void notifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, uint8_t* pData, size_t length, bool isNotify) {
   // **** For Heart Rate 0x2A37 ****
   // pData[0] contains the flags of the transmission [format, status(2), energy expenditure, RR-interval length]

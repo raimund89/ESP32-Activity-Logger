@@ -2,7 +2,7 @@
  ESP32-based logger for activities including GPS and BLE-devices
 
 ## Credits
-The project uses Neil Kolban's libraries for Bluetooth connections ([here](https://github.com/nkolban/ESP32_BLE_Arduino)). It also uses TinyGPS++ from Mikal Hart ([here](http://arduiniana.org/libraries/tinygpsplus/)) for controlling and interpreting the GY-GPS6MV2 module.
+The project uses Neil Kolban's libraries for Bluetooth connections ([here](https://github.com/nkolban/ESP32_BLE_Arduino)). It also uses TinyGPS++ from Mikal Hart ([here](https://github.com/mikalhart/TinyGPSPlus)) for controlling and interpreting the GY-GPS6MV2 module.
 
 ## Capabilities
 - [x] Receive GPS location from GY-GPS6MV2 module

@@ -1,3 +1,4 @@
+#include <Ticker.h>
 #include "Bluetooth.h"
 
 // Using Neil Kolban's Bluetooth libraries. Can save a lot of space on the device by not doing this...
@@ -29,14 +30,31 @@ static void messageCallback(const char* message) {
   Serial.println(message);
 }
 
-Bluetooth btConnection(messageCallback, notifyCallback);
+Bluetooth* btConnection;
+bool btUpdate = false;
+
+// For the Bluetooth connection, which only needs to be
+// called every few seconds, give or take, to keep it alive.
+Ticker doBT;
+void handleBluetooth() {
+  btUpdate = true;
+}
 
 void setup() {
+  // Use Serial1 for debug logging
   Serial.begin(115200);
-  btConnection.init();
+  btConnection = new Bluetooth(messageCallback, notifyCallback);
+  btConnection->init();
+
+  // Fire the ticker every 2 seconds
+  doBT.attach(2.0, handleBluetooth);
 }
 
 void loop() {
-  btConnection.handle();
+  // Bluetooth
+  if(btUpdate) {
+    btUpdate = false;
+    btConnection->handle();
+  }
   delay(1000);
 }

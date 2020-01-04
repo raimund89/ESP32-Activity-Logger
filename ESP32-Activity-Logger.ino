@@ -6,6 +6,19 @@ TinyGPSPlus gps;
 Bluetooth* btConnection;
 bool btUpdate = false;
 
+struct {
+  // Sensor data
+  uint8_t heartrate;
+  uint8_t cadence;
+  // GPS location info
+  bool fix = false;
+  double lat;
+  double lng;
+  // GPS time info
+  uint32_t time;
+  uint32_t time_age;
+} currentData;
+
 static void notifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, uint8_t* pData, size_t length, bool isNotify) {
   Serial.println(pData[1]);
 }

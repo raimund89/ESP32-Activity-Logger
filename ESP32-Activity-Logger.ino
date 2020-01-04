@@ -61,13 +61,23 @@ void loop() {
   }
 
   if(gps.location.isUpdated()) {
+    currentData.fix = true;
+    currentData.lat = gps.location.lat();
+    currentData.lng = gps.location.lng();
     Serial.print("Fix time = ");
-    Serial.print(gps.date.value());
     Serial.print(gps.time.value());
     Serial.print(",Latitude = ");
-    Serial.print(gps.location.lat(),8);
+    Serial.print(currentData.lat,8);
     Serial.print(", Longitude = ");
-    Serial.println(gps.location.lng(),8);
+    Serial.println(currentData.lng,8);
+  }
+
+  if(gps.time.isUpdated()) {
+    currentData.time = gps.time.value();
+    Serial.print("New time = ");
+    Serial.println(gps.time.value());
+  } else {
+    currentData.time_age = gps.time.age();
   }
   
   delay(1000);

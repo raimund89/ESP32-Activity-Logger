@@ -20,7 +20,7 @@ struct {
 } currentData;
 
 static void notifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, uint8_t* pData, size_t length, bool isNotify) {
-  Serial.println(pData[1]);
+  //Serial.println(pData[1]);
 }
 
 static void messageCallback(const char* message) {
@@ -32,6 +32,12 @@ static void messageCallback(const char* message) {
 Ticker doBT;
 void handleBluetooth() {
   btUpdate = true;
+}
+
+// For saving our data. We want to save every 2 seconds for now
+Ticker doWrite;
+void handleWrite() {
+  // TODO: Do writing stuff here
 }
 
 void setup() {
@@ -46,6 +52,9 @@ void setup() {
 
   // Fire the ticker every 2 seconds
   doBT.attach(2.0, handleBluetooth);
+
+  // Now we can start writing the activity
+  doWrite.attach(2.0, handleWrite);
 }
 
 void loop() {
@@ -61,17 +70,12 @@ void loop() {
   }
 
   if(gps.location.isUpdated()) {
+    Serial.println(" - Received location");
     currentData.fix = true;
     currentData.lat = gps.location.lat();
     currentData.lng = gps.location.lng();
     currentData.time = gps.time.value();
     currentData.time_age = gps.time.age();
-    Serial.print("Fix time = ");
-    Serial.print(gps.time.value());
-    Serial.print(",Latitude = ");
-    Serial.print(currentData.lat,8);
-    Serial.print(", Longitude = ");
-    Serial.println(currentData.lng,8);
   } else {
     currentData.time_age = gps.location.age();
 

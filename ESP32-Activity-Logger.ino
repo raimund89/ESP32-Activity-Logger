@@ -64,21 +64,22 @@ void loop() {
     currentData.fix = true;
     currentData.lat = gps.location.lat();
     currentData.lng = gps.location.lng();
+    currentData.time = gps.time.value();
+    currentData.time_age = gps.time.age();
     Serial.print("Fix time = ");
     Serial.print(gps.time.value());
     Serial.print(",Latitude = ");
     Serial.print(currentData.lat,8);
     Serial.print(", Longitude = ");
     Serial.println(currentData.lng,8);
-  }
-
-  if(gps.time.isUpdated()) {
-    currentData.time = gps.time.value();
-    Serial.print("New time = ");
-    Serial.println(gps.time.value());
   } else {
-    currentData.time_age = gps.time.age();
+    currentData.time_age = gps.location.age();
+
+    // If we don't have our location updated for
+    // 10 seconds, apparently we have lost our fix
+    if(currentData.time_age > 10000) {
+      currentData.fix = false;
+    }
   }
-  
-  delay(1000);
+  delay(10); // Give the OS some time to do things
 }

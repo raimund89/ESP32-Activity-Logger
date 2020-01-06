@@ -19,6 +19,7 @@ It should contain:
 - A battery
 
 ## Todo list
+- [ ] Bluetooth should be reconnecting on losing a device
 - [ ] Make a central structure for the most recent data
 - [ ] Make a variable indicating GPS connection is established
 - [ ] Add more callback methods for the Bluetooth connection

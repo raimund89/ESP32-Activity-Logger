@@ -1,10 +1,21 @@
 #include <TinyGPS++.h>
 #include <Ticker.h>
+#include <SPI.h>
+#include <SPIMemory.h>
 #include "Bluetooth.h"
+
+// TODO: Add checks to see if things are working
 
 TinyGPSPlus gps;
 Bluetooth* btConnection;
 bool btUpdate = false;
+
+/*
+ * First Int contains last written address
+ * After that, flash contains just time-identified structs
+ */
+
+SPIFlash flash(5);
 
 struct {
   // Sensor data
@@ -34,15 +45,36 @@ void handleBluetooth() {
   btUpdate = true;
 }
 
+uint32_t nextLocation;
+
 // For saving our data. We want to save every 2 seconds for now
 Ticker doWrite;
 void handleWrite() {
-  // TODO: Do writing stuff here
+  Serial.println("Writing data");
+  flash.eraseSection(nextLocation, sizeof(currentData));
+  flash.writeAnything(nextLocation, currentData);
+  nextLocation += sizeof(currentData);
+  Serial.printf("Next location is %d\n", nextLocation);
+  flash.eraseSection(0, 4);
+  flash.writeULong(0, nextLocation);
+  Serial.printf("Reading next location gives %u\n", flash.readULong(0));
+}
+
+void clearFlash() {
+  flash.eraseChip();
+  flash.writeULong(0, 4); // Write to first byte
+  nextLocation = 4;
 }
 
 void setup() {
   // Use Serial1 for debug logging
   Serial.begin(115200);
+
+  // Now initialize the SPI flash
+  flash.begin();
+  nextLocation = flash.readULong(0);
+  Serial.printf("Location of newest pointer: %u\n", nextLocation);
+  
   // Now use Serial2 for GPS.
   // Initialize before BT, because it generally takes longer to setup
   Serial2.begin(9600);
